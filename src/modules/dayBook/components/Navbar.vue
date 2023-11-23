@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">
             <img src="@/assets/logo.svg" alt="vue logo" height="24" class="d-inline-block align-text-top mx-2">
-            Daybook
+            {{ userName }}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,23 +11,34 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+
                 </li>
             </ul>
         </div>
         <div class="d-flex">
-            <button class="btn btn-outline-info mx-2">
+            <button class="btn btn-outline-info mx-2" @click="onLogout">
                 <i class="fa fa-sign-out-alt"></i>
             </button>
         </div>
     </nav>
 </template>
+
+<script>
+import { useRouter } from 'vue-router';
+import useAuth from '@/modules/auth/hooks/useAuth';
+
+export default {
+    setup() {
+        const router = useRouter()
+        const { userName, logout } = useAuth()
+
+        return {
+            userName,
+            onLogout: () => {
+                router.push({ name: 'login' })
+                logout()
+            }
+        }
+    }
+}
+</script>

@@ -33,10 +33,13 @@
 </template>
 <script>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import useAuth from '../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 export default {
     setup() {
+        const router = useRouter()
         const { createUser } = useAuth()
         const userFrm = ref({
             name: '',
@@ -48,7 +51,10 @@ export default {
             userFrm,
             onSubmit: async () => {
                 // console.log(userFrm.value)
-                createUser(userFrm)
+                const { ok, message } = await createUser(userFrm.value)
+
+                if (!ok) Swal.fire('Error', message, 'error')
+                else router.push({ name: 'no-entry' })
             }
         }
     }
